@@ -1,5 +1,8 @@
 # The Virtual Neuro Lab
 
+**Open the lab in your browser: https://romananeuroscience-art.github.io/TheVirtualNeuroLab/** (nothing to install; works on a phone too). The `localhost` links further down are only for running the lab on your own computer, which you
+need for the Ask Muse panel.
+
 Experiments on a simulated fruit-fly brain, wired neuron by neuron from a real electron-microscope scan (FlyWire v783),
 running the published brain model of Shiu et al. 2024 (*Nature* 634:210) with its published settings. Every pass mark is
 written down before the run, nothing is tuned, and misses stay on the page. Built for the Meta (Muse) hackathon, November 2026.
