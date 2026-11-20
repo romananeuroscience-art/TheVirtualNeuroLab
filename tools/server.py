@@ -1,18 +1,19 @@
-"""The Virtual Neuro Lab local server: serves the lab pages AND answers the "Ask Muse" panel.
+"""The Virtual Neuro Lab local server: serves the lab pages AND answers the "Ask Claude" panel.
 
     python3 tools/server.py            (start_skeleton.command does this for you)
 
-Pages are served from the fly-lab-skeleton folder on http://localhost:8200.
+Pages are served from this folder on http://localhost:8200.
 POST /api/ask {"question": "...", "page": "/experiments/"} -> {"answer": "...", "sources": [...]}
 
-How Muse answers (and what it may not do):
-  * Muse Spark (Meta) gets three tools: search_lab (the lab's own records, lab_index.json), search_pubmed and
+How Claude answers (and what it may not do):
+  * Claude (Anthropic) gets three tools: search_lab (the lab's own records, lab_index.json), search_pubmed and
     search_wikipedia. It must look in the lab first, and only use the web when the lab has no answer.
   * It cites what it used as [L12] (a lab record) or [W3] (a web source); the panel shows those as links.
   * It cannot run, change or score experiments, and it is told never to invent lab results.
-  * Your API key stays on this computer: it is read from .env (META_API_KEY=...) in this folder or in
-    ~/Desktop/Fly Brain/.env, and the browser never sees it.
-If the key, the 'openai' package or the internet is missing, the pages still work and the panel says Muse is offline.
+  * Your API key stays on this computer: it is read from .env (ANTHROPIC_API_KEY=...) in this folder or in
+    ~/Desktop/Fly Brain/.env, and the browser never sees it. Get a key at https://console.anthropic.com
+    (billed per question; separate from a claude.ai subscription).
+If the key, the 'anthropic' package or the internet is missing, the pages still work and the panel says Claude is offline.
 """
 import json, os, re, sys, math, time, urllib.parse, urllib.request
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
@@ -29,18 +30,17 @@ for envf in (os.path.join(ROOT, '.env'), os.path.expanduser('~/Desktop/Fly Brain
             if '=' in line and not line.strip().startswith('#'):
                 k, v = line.strip().split('=', 1)
                 os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-MODEL = os.environ.get('META_MODEL', 'muse-spark-1.3')
-EFFORT = os.environ.get('META_REASONING', 'low')
+MODEL = os.environ.get('CLAUDE_MODEL', 'claude-sonnet-5-5')
 def log(msg): sys.stderr.write(msg + '\n'); sys.stderr.flush()
 CLIENT, OFFLINE = None, ''
 try:
-    key = os.environ.get('META_API_KEY', '')
+    key = os.environ.get('ANTHROPIC_API_KEY', '')
     if not key or key.startswith('your_'):
-        raise RuntimeError('no META_API_KEY found (.env)')
-    from openai import OpenAI
-    CLIENT = OpenAI(api_key=key, base_url=os.environ.get('META_BASE_URL', 'https://api.meta.ai/v1'), timeout=120)
+        raise RuntimeError('no ANTHROPIC_API_KEY found (.env)')
+    import anthropic
+    CLIENT = anthropic.Anthropic(api_key=key, timeout=120)
 except Exception as e:
-    OFFLINE = str(e) if 'openai' not in str(e) else "the 'openai' package is missing (run: pip3 install openai)"
+    OFFLINE = "the 'anthropic' package is missing (run: pip3 install anthropic)" if isinstance(e, ImportError) else str(e)
 
 # ---------------- the lab's own records ----------------
 INDEX = json.load(open(os.path.join(ROOT, 'lab_index.json'))) if os.path.exists(os.path.join(ROOT, 'lab_index.json')) else []
@@ -68,7 +68,7 @@ def search_pubmed(query, k=5):
     if not ids: return []
     summ = get(base + 'esummary.fcgi?' + urllib.parse.urlencode(dict(db='pubmed', id=','.join(ids), retmode='json')))['result']
     out = []
-    try:   # abstracts, so Muse reads what the paper found, not just its title
+    try:   # abstracts, so Claude reads what the paper found, not just its title
         txt = urllib.request.urlopen(urllib.request.Request(base + 'efetch.fcgi?' + urllib.parse.urlencode(dict(db='pubmed', id=','.join(ids), rettype='abstract', retmode='text')), headers={'User-Agent': UA}), timeout=20).read().decode('utf8', 'ignore')
         abstracts = [a.strip() for a in re.split(r'\n\n\d+\. ', '\n\n' + txt) if a.strip()]
     except Exception:
@@ -91,15 +91,14 @@ def search_wikipedia(query, k=3):
         out.append(dict(title=p['title'], url='https://en.wikipedia.org/wiki/' + urllib.parse.quote(p['key']), source='Wikipedia', text=ex[:1500]))
     return out
 
+def _tool(name, desc):
+    return {'name': name, 'description': desc, 'input_schema': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}}
 TOOLS = [
-    {'type': 'function', 'function': {'name': 'search_lab', 'description': "Search The Virtual Neuro Lab's own records: experiments and their results, rules, calibration, the Discovery Screen predictions, brain regions, cell types, the flies, the worm, Parkinson's. Always try this first.",
-                                      'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}}},
-    {'type': 'function', 'function': {'name': 'search_pubmed', 'description': 'Search published biology papers (PubMed) when the lab has no answer. Returns titles, links and abstracts.',
-                                      'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}}},
-    {'type': 'function', 'function': {'name': 'search_wikipedia', 'description': 'Search Wikipedia for general background when the lab has no answer.',
-                                      'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}}},
+    _tool('search_lab', "Search The Virtual Neuro Lab's own records: experiments and their results, rules, calibration, the Discovery Screen predictions, brain regions, cell types, the flies, the worm, Parkinson's. Always try this first."),
+    _tool('search_pubmed', 'Search published biology papers (PubMed) when the lab has no answer. Returns titles, links and abstracts.'),
+    _tool('search_wikipedia', 'Search Wikipedia for general background when the lab has no answer.'),
 ]
-SYSTEM = """You are Muse, the guide inside The Virtual Neuro Lab, a virtual neuroscience lab that runs experiments on simulated fruit fly brains wired from real connectome scans.
+SYSTEM = """You are Claude, made by Anthropic, the guide inside The Virtual Neuro Lab, a virtual neuroscience lab that runs experiments on simulated fruit fly brains wired from real connectome scans.
 Rules:
 1. Always call search_lab first. If the lab's records answer the question, answer from them and cite each fact as [L<number>] using the ids you were given.
 2. Only if the lab has no answer (or the visitor asks about the wider world), call search_pubmed and/or search_wikipedia, and cite each fact as [W<number>]. Say plainly that this part comes from the web, not from the lab.
@@ -110,39 +109,29 @@ Rules:
 
 def ask(question, page=''):
     if not CLIENT:
-        return dict(answer=f'Muse is offline right now: {OFFLINE}. The rest of the lab works normally.', sources=[], offline=True)
+        return dict(answer=f'Claude is offline right now: {OFFLINE}. The rest of the lab works normally.', sources=[], offline=True)
     sources, nW = {}, [0]
-    msgs = [{'role': 'system', 'content': SYSTEM},
-            {'role': 'user', 'content': f'(The visitor is on the page: {page})\n{question}'}]
-    for _ in range(5):
-        # Muse Spark thinks before it writes, and that thinking counts against max_tokens: leave plenty of room,
-        # and ask for low reasoning effort so answers come back quickly.
-        try:
-            r = CLIENT.chat.completions.create(model=MODEL, messages=msgs, tools=TOOLS, tool_choice='auto', temperature=0.2,
-                                               max_tokens=4000, extra_body={'reasoning_effort': EFFORT})
-        except Exception as e:          # if this model refuses the reasoning setting, ask again without it
-            if 'reasoning' not in str(e).lower(): raise
-            log(f'  (reasoning_effort not accepted: {e}; retrying without it)')
-            r = CLIENT.chat.completions.create(model=MODEL, messages=msgs, tools=TOOLS, tool_choice='auto', temperature=0.2, max_tokens=4000)
-        ch = r.choices[0]; m = ch.message
-        log(f"  step: finish={ch.finish_reason} tools={[tc.function.name for tc in (m.tool_calls or [])]} "
-            f"chars={len(m.content or '')} usage={getattr(r, 'usage', None)}")
-        if not m.tool_calls:
-            ans = (m.content or '').strip()
-            if ch.finish_reason == 'length' or not ans:
-                ans = (ans + ' …' if ans else '') + "\n(Muse ran out of room before finishing this answer. Please ask again, maybe a bit more narrowly.)"
-
+    msgs = [{'role': 'user', 'content': f'(The visitor is on the page: {page})\n{question}'}]
+    for _ in range(6):
+        r = CLIENT.messages.create(model=MODEL, max_tokens=1500, system=SYSTEM, tools=TOOLS, messages=msgs)
+        uses = [b for b in r.content if b.type == 'tool_use']
+        log(f"  step: stop={r.stop_reason} tools={[u.name for u in uses]} usage={getattr(r, 'usage', None)}")
+        if r.stop_reason != 'tool_use':
+            ans = ''.join(b.text for b in r.content if b.type == 'text').strip()
+            if r.stop_reason == 'max_tokens' or not ans:
+                ans = (ans + ' …' if ans else '') + "\n(Claude ran out of room before finishing this answer. Please ask again, maybe a bit more narrowly.)"
             used = sorted(set(re.findall(r'\[([LW]\d+)\]', ans)), key=lambda s: (s[0], int(s[1:])))
             return dict(answer=ans, sources=[dict(id=u, **sources[u]) for u in used if u in sources], model=MODEL)
-        msgs.append({'role': 'assistant', 'content': m.content or '', 'tool_calls': [tc.model_dump() for tc in m.tool_calls]})
-        for tc in m.tool_calls:
+        msgs.append({'role': 'assistant', 'content': [b.model_dump(exclude_none=True) for b in r.content]})
+        results = []
+        for u in uses:
             try:
-                q = json.loads(tc.function.arguments or '{}').get('query', question)
-                if tc.function.name == 'search_lab':
+                q = (u.input or {}).get('query', question)
+                if u.name == 'search_lab':
                     res = search_lab(q)
                     for x in res: sources[x['id']] = dict(kind='lab', title=x['title'], url='/' + x['page'])
                 else:
-                    raw = search_pubmed(q) if tc.function.name == 'search_pubmed' else search_wikipedia(q)
+                    raw = search_pubmed(q) if u.name == 'search_pubmed' else search_wikipedia(q)
                     res = []
                     for x in raw:
                         nW[0] += 1; wid = f'W{nW[0]}'
@@ -150,8 +139,9 @@ def ask(question, page=''):
                         res.append(dict(id=wid, **x))
             except Exception as e:
                 res = {'error': f'search failed: {e!r}'[:300]}
-            log(f"  tool {tc.function.name}({tc.function.arguments}) -> {len(res) if isinstance(res, list) else res}")
-            msgs.append({'role': 'tool', 'tool_call_id': tc.id, 'content': json.dumps(res, ensure_ascii=False)})
+            log(f"  tool {u.name}({u.input}) -> {len(res) if isinstance(res, list) else res}")
+            results.append({'type': 'tool_result', 'tool_use_id': u.id, 'content': json.dumps(res, ensure_ascii=False)})
+        msgs.append({'role': 'user', 'content': results})
     return dict(answer="Sorry, I couldn't finish looking that up. Please try asking it a different way.", sources=[])
 
 class Handler(SimpleHTTPRequestHandler):
@@ -169,7 +159,7 @@ class Handler(SimpleHTTPRequestHandler):
             out = ask(q, str(body.get('page', ''))[:200]) if q else dict(answer='Ask me anything about the lab.', sources=[])
         except Exception as e:
             log(f'  ERROR {type(e).__name__}: {e}')
-            out = dict(answer=f'Muse ran into a problem ({type(e).__name__}). Please try again in a moment.', sources=[], error=str(e)[:300])
+            out = dict(answer=f'Claude ran into a problem ({type(e).__name__}). Please try again in a moment.', sources=[], error=str(e)[:300])
         data = json.dumps(out, ensure_ascii=False).encode()
         self.send_response(200); self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(data)))
         self.end_headers(); self.wfile.write(data)
@@ -184,5 +174,5 @@ class Handler(SimpleHTTPRequestHandler):
         if a and '/api/' in str(a[0]): sys.stderr.write('%s\n' % (fmt % a))
 
 if __name__ == '__main__':
-    print(f'The Virtual Neuro Lab on http://localhost:{PORT}  ·  Muse: ' + (f'online ({MODEL})' if CLIENT else f'offline ({OFFLINE})'))
+    print(f'The Virtual Neuro Lab on http://localhost:{PORT}  ·  Ask Claude: ' + (f'online ({MODEL})' if CLIENT else f'offline ({OFFLINE})'))
     ThreadingHTTPServer(('127.0.0.1', PORT), partial(Handler, directory=ROOT)).serve_forever()
