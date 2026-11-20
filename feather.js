@@ -109,7 +109,7 @@ window.Feather = (() => {
       { el: '.shell-nav, .shell-menubtn', t: 'Getting around', b: 'Every part of the lab is here. Each page has its own short tour the first time you open it.' },
       { el: '.cta', t: 'Start here: the Neuron Silencing Screen', b: 'Switch off one neuron and see whether the fly can still eat or drink. This is where the lab makes new predictions that no one has tested yet.' },
       { el: '.tiles', t: 'The rest of the lab', b: 'Parkinson\u2019s, the Vivarium (our fly, what she does and why), a map of every brain region, and the worm.' },
-      { el: '#muse-btn', t: 'Ask Muse', b: 'Got a question? Muse, Meta’s AI, answers from the lab’s own records first and then the web, and shows its sources.' },
+      { el: '#muse-btn', t: 'Ask Claude', b: 'Got a question? Claude, Anthropic’s AI, answers from the lab’s own records first and then the web, and shows its sources.' },
       { el: '[data-light-toggle]', t: 'Light or dark', b: 'Switch between a light and a dark look whenever you like.' },
     ],
     discover: [
@@ -342,10 +342,10 @@ window.Feather = (() => {
     askMuse();
     return el;
   }
-  // ---- Ask Muse: floating panel on every page (answers come from tools/server.py) ----
+  // ---- Ask Claude: floating panel on every page (answers come from tools/server.py) ----
   function askMuse() {
     if (document.getElementById('muse-btn')) return;
-    if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;  // Muse needs the lab's own server (tools/server.py); the public website has none
+    if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;  // Claude needs the lab's own server (tools/server.py); the public website has none
     const css = document.createElement('style');
     css.textContent = `#muse-btn{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--sage);color:var(--sage-ink);border:none;border-radius:999px;padding:11px 16px;font-weight:700;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);cursor:pointer}
 #muse-pane{position:fixed;right:18px;bottom:70px;z-index:61;width:min(420px,calc(100vw - 32px));max-height:min(620px,calc(100dvh - 100px));display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.22);overflow:hidden}
@@ -366,9 +366,9 @@ window.Feather = (() => {
 #muse-form button{background:var(--sage);color:var(--sage-ink);border:none;border-radius:10px;padding:0 14px;font-weight:700;cursor:pointer}
 .mchips{display:flex;flex-wrap:wrap;gap:6px}.mchips button{background:none;border:1px dashed var(--line);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--muted);cursor:pointer}`;
     document.head.appendChild(css);
-    const btn = document.createElement('button'); btn.id = 'muse-btn'; btn.textContent = 'Ask Muse';
-    const pane = document.createElement('section'); pane.id = 'muse-pane'; pane.hidden = true; pane.setAttribute('aria-label', 'Ask Muse');
-    pane.innerHTML = `<header><div><b>Ask Muse</b><small>Answers from the lab's records first, then the web. Written by AI; check the sources.</small></div><button class="x" aria-label="Close">×</button></header>
+    const btn = document.createElement('button'); btn.id = 'muse-btn'; btn.textContent = 'Ask Claude';
+    const pane = document.createElement('section'); pane.id = 'muse-pane'; pane.hidden = true; pane.setAttribute('aria-label', 'Ask Claude');
+    pane.innerHTML = `<header><div><b>Ask Claude</b><small>Answers from the lab's records first, then the web. Written by AI; check the sources.</small></div><button class="x" aria-label="Close">×</button></header>
       <div id="muse-log" aria-live="polite"><div class="mchips">${['What is MN9?', 'Why did experiment E4 miss?', 'What does the Neuron Silencing Screen predict?', 'What happens when dopamine neurons die?'].map(q => `<button>${q}</button>`).join('')}</div></div>
       <form id="muse-form"><input placeholder="Ask anything about the lab…" aria-label="Your question" maxlength="1000"><button>Ask</button></form>`;
     document.body.append(btn, pane);
@@ -383,11 +383,11 @@ window.Feather = (() => {
       const a = document.createElement('div'); a.className = 'ma'; a.textContent = 'Looking in the lab…'; log.appendChild(a); log.scrollTop = log.scrollHeight;
       let r;
       try { r = await (await fetch('/api/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: q, page: location.pathname + location.hash }) })).json(); }
-      catch (err) { r = { answer: 'Muse is offline: start the lab with start_skeleton.command (it runs the lab’s own server).', sources: [] }; }
+      catch (err) { r = { answer: 'Claude is offline: start the lab with start_skeleton.command (it runs the lab’s own server).', sources: [] }; }
       const S = Object.fromEntries((r.sources || []).map(s => [s.id, s]));
       let html = esc(r.answer || '').replace(/\[([LW]\d+)\]/g, (m, id) => S[id] ? `<sup><a href="${esc(S[id].url)}" ${S[id].kind === 'web' ? 'target="_blank" rel="noopener"' : ''} title="${esc(S[id].title)}">${id}</a></sup>` : '').replace(/\n/g, '<br>');
       if ((r.sources || []).length) html += `<div class="src">${r.sources.map(s => `<div><span class="k ${s.kind === 'web' ? 'k-web' : 'k-lab'}">${s.kind === 'web' ? 'WEB' : 'LAB'} ${s.id}</span><a href="${esc(s.url)}" ${s.kind === 'web' ? 'target="_blank" rel="noopener"' : ''}>${esc(s.title)}</a>${s.where ? ` <span style="color:var(--muted)">· ${esc(s.where)}</span>` : ''}</div>`).join('')}</div>`;
-      if (r.model) html += `<div class="ai">Written by ${esc(r.model)} (Meta). It can make mistakes; it can't run or change experiments.</div>`;
+      if (r.model) html += `<div class="ai">Written by ${esc(r.model)} (Anthropic). It can make mistakes; it can't run or change experiments.</div>`;
       a.innerHTML = html; log.scrollTop = log.scrollHeight;
     }
   }
