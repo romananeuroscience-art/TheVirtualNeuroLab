@@ -202,7 +202,7 @@ window.Feather = (() => {
     document.head.appendChild(c);
   }
   function startTour(key) {
-    const steps = TOURS[key]; if (!steps) return;
+    const steps = (TOURS[key] || []).filter(s => !s.el || document.querySelector(s.el)); if (!steps.length) return;
     endTour(); tourCSS();
     store.set('flylab-tour-' + key, 'seen');
     const back = document.activeElement;
@@ -345,6 +345,7 @@ window.Feather = (() => {
   // ---- Ask Muse: floating panel on every page (answers come from tools/server.py) ----
   function askMuse() {
     if (document.getElementById('muse-btn')) return;
+    if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;  // Muse needs the lab's own server (tools/server.py); the public website has none
     const css = document.createElement('style');
     css.textContent = `#muse-btn{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--sage);color:var(--sage-ink);border:none;border-radius:999px;padding:11px 16px;font-weight:700;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);cursor:pointer}
 #muse-pane{position:fixed;right:18px;bottom:70px;z-index:61;width:min(420px,calc(100vw - 32px));max-height:min(620px,calc(100dvh - 100px));display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.22);overflow:hidden}
