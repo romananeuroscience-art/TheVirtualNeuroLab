@@ -182,7 +182,7 @@ if (location.hash === '#r1' || location.hash === '#infer') { $('evidence').open 
 
 // ---------- render loop ----------
 const tmp = new T.Vector3();
-function fit(r, el, cam) { const w = el.clientWidth, h = el.clientHeight; if (r.domElement.width !== Math.round(w * r.getPixelRatio())) { r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); } }
+function fit(r, el, cam) { const w = el.clientWidth, h = el.clientHeight; if (r.domElement.width !== Math.round(w * r.getPixelRatio())) { r.setSize(w, h, false); cam.aspect = w / h; cam.zoom = Math.min(1, w / h * 0.85); cam.updateProjectionMatrix(); } }
 (function loop(now) {
   const t = now / 1000; fit(br, bv, bcam); fit(rr, rv, rcam);
   // beats: 0-0.8 s signal in, 0.8-2.4 s processing, 2.4 s decision, then she moves
