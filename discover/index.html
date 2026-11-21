@@ -187,8 +187,8 @@ td.n { text-align:right; white-space:nowrap; }
         </ul>
       </div>
       <div class="limits"><b>What it doesn't tell us.</b> These are predictions, not facts. When we checked this brain against
-        known results it scored 10 of 15, and its misses were exactly this kind of single-neuron question. Each of the 8 is a
-        strong lead that still needs a living-fly experiment.</div>
+        known results it scored 10 of 15, and its misses were exactly this kind of single-neuron question. All 8, including the 3 strong
+        leads, still need a living-fly experiment.</div>
     </div>
 
     <p class="fine">Brain: FlyWire v783 (Dorkenwald et al. 2024; Schlegel et al. 2024), published wiring and settings of Shiu et al. 2024.
@@ -555,12 +555,12 @@ $('predlead').innerHTML = `Rules saved ${when}, before the screen ran. Of ${D.ne
   needed for eating or drinking. <b>${nNew}</b> of those are <b>new discoveries</b>: no living-fly test that we know of, so a real lab could check them next.
   <br><small>Numbers re-checked with 30 runs are compared with the 30-run normal brain (sugar ${f1(D.baseline.sugar)}, water ${f1(D.baseline.water)});
   the rest are from the 10-run screen, compared with its own normal-brain run.</small>`;
-const rng = (n, c) => n[c + '_ci'] && n[c + '_needed'] ? `<br><small style="color:var(--muted)">95% range ${Math.round(-100 * n[c + '_ci'][1])} to ${Math.round(-100 * n[c + '_ci'][0])}%</small>` : '';
+const rng = (n, c) => n[c + '_ci'] && n[c + '_needed'] ? `<br><small style="color:var(--muted)">95% range ${-Math.round(100 * n[c + '_ci'][1])} to ${-Math.round(100 * n[c + '_ci'][0])}%</small>` : '';
 const bars = k => `<span class="cbars" aria-hidden="true">${[1, 2, 3].map(i => `<i class="${i <= k ? 'on' : ''}"></i>`).join('')}</span>`;
 const LIVE = { new: '<b>new discovery</b>: no test known to us', known: 'agrees with real flies (drinking, Shiu et al. 2024)', open: 'named in the 2024 study; this effect not tested as far as we know' };
 $('ptab').innerHTML = `<thead><tr><th>Neuron</th><th>Cell type</th><th style="text-align:right">Eating (MN9 to sugar)</th><th style="text-align:right">Drinking (MN9 to water)</th><th>Prediction</th><th>How sure</th><th>Living-fly test</th></tr></thead><tbody>`
   + need.map(n => `<tr><td><b>${n.label}</b><br><span class="mono">${n.id}</span></td><td>${n.type || '—'}</td>
-    <td class="n">${f1(n.sugar_base)} → ${f1(n.sugar)} (${Math.round(-100 * n.sugar_drop)}%)${rng(n, 'sugar')}</td><td class="n">${f1(n.water_base)} → ${f1(n.water)} (${Math.round(-100 * n.water_drop)}%)${rng(n, 'water')}</td>
+    <td class="n">${f1(n.sugar_base)} → ${f1(n.sugar)} (${-Math.round(100 * n.sugar_drop)}%)${rng(n, 'sugar')}</td><td class="n">${f1(n.water_base)} → ${f1(n.water)} (${-Math.round(100 * n.water_drop)}%)${rng(n, 'water')}</td>
     <td>${[n.sugar_needed && 'needed to eat', n.water_needed && 'needed to drink'].filter(Boolean).join(', ')}</td>
     <td style="white-space:nowrap">${n.conf ? bars(n.conf.score) + ' ' + n.conf.level : '—'}</td>
     <td>${LIVE[n.status] || (n.tested ? 'named in the 2024 study' : '<b>new discovery</b>: none known to us')}</td></tr>`).join('') + '</tbody>';
