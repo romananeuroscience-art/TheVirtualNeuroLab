@@ -114,7 +114,7 @@
    "date": "2026-11-03 14:26 UTC",
    "question": "Does bitter beat even strong sugar?",
    "why": "This result was found in living flies. Checking whether the untouched simulated brain reproduces it measures how far to trust its new predictions.",
-   "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and stopped drinking even of strong sugar (1 M). (Shiu et al. 2024, optogenetics)",
+   "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and even to strong sugar (1 M). (Shiu et al. 2024, optogenetics)",
    "brain": "FlyWire v783 (female brain), wiring as published with the 2024 study's code (Connectivity_783: all synapses), published settings unchanged (w_syn 0.275 mV, 30 repeats x 1 s). This is the same brain the Fly Atlas shows in 3D.",
    "method": [
     "Weak sugar = the lowest calibration rate at which MN9 fires 10+ per second on this brain (decided by rule, read from the calibration run). Strong sugar = 200 per second. Bitter, Ir94e and water = 200 per second. Activated single cell types = 100 per second. Silencing = all connections to and from the neuron set to zero (as in the published code)."
@@ -254,7 +254,7 @@
    "date": "2026-11-03 14:26 UTC",
    "question": "Fudog responds to water",
    "why": "This result was found in living flies. Checking whether the untouched simulated brain reproduces it measures how far to trust its new predictions.",
-   "real": "Fudog responds to water (calcium imaging). (Shiu et al. 2024)",
+   "real": "Fudog responds to water (calcium imaging); it also responds to sugar. (Shiu et al. 2024)",
    "brain": "FlyWire v783 (female brain), wiring as published with the 2024 study's code (Connectivity_783: all synapses), published settings unchanged (w_syn 0.275 mV, 30 repeats x 1 s). This is the same brain the Fly Atlas shows in 3D.",
    "method": [
     "Weak sugar = the lowest calibration rate at which MN9 fires 10+ per second on this brain (decided by rule, read from the calibration run). Strong sugar = 200 per second. Bitter, Ir94e and water = 200 per second. Activated single cell types = 100 per second. Silencing = all connections to and from the neuron set to zero (as in the published code)."
