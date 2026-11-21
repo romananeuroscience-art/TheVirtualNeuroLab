@@ -442,7 +442,7 @@
      "ok": true
     },
     {
-     "label": "\"Clavicle\": drinking 84% lower · Strong lead",
+     "label": "\"Clavicle\": drinking 83% lower · Strong lead",
      "ok": true
     }
    ],
@@ -547,12 +547,12 @@
    "rule_written": "2026-11-03 15:27 UTC",
    "results": [
     {
-     "label": "Drinking: tongue signal 30.7 → 18.1 per second (41% lower; 95% range 36-45%)",
+     "label": "Drinking: tongue signal 30.7 → 18.1 per second (41% lower; 95% range 37-45%)",
      "ok": true
     }
    ],
    "conclusion": "No real-fly test of this neuron known to us: a new, testable prediction.",
-   "confidence": "Moderate lead. Drinking: tongue signal 41% lower; across 30 runs the drop stays between 36% and 45% (95% range).",
+   "confidence": "Moderate lead. Drinking: tongue signal 41% lower; across 30 runs the drop stays between 37% and 45% (95% range).",
    "discovery": {
     "status": "new",
     "text": "Potential discovery: no real-fly test known to us."
@@ -697,12 +697,12 @@
    "rule_written": "2026-11-03 15:27 UTC",
    "results": [
     {
-     "label": "Drinking: tongue signal 30.7 → 5.1 per second (84% lower; 95% range 82-85%)",
+     "label": "Drinking: tongue signal 30.7 → 5.1 per second (83% lower; 95% range 81-85%)",
      "ok": true
     }
    ],
    "conclusion": "Named in the 2024 study; we found no real-fly test of its role in drinking.",
-   "confidence": "Strong lead. Drinking: tongue signal 84% lower; across 30 runs the drop stays between 82% and 85% (95% range).",
+   "confidence": "Strong lead. Drinking: tongue signal 83% lower; across 30 runs the drop stays between 81% and 85% (95% range).",
    "discovery": {
     "status": "open",
     "text": "A new prediction about a neuron already named in the literature."
