@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changes and Corrections · The Virtual Neuro Lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%230064e0'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../vendor/fonts/fonts.css?v=2">
+<link rel="stylesheet" href="../feather.css?v=12">
+<style>
+.hero { min-height:100dvh; background:var(--bg); color:var(--ink); }
+.wrap { max-width:900px; margin:0 auto; padding:34px 22px 60px; }
+h1 { font-size:clamp(30px,4.4vw,46px); line-height:1.06; margin:8px 0 12px; }
+h2 { font-size:24px; margin:40px 0 4px; }
+.lead { font-size:16px; line-height:1.6; color:var(--muted); margin:0; }
+p, li { font-size:15px; line-height:1.6; }
+.entry { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:16px 18px; margin:12px 0; }
+.entry h3 { font-size:17px; margin:0 0 6px; letter-spacing:-.01em; }
+.entry p { margin:6px 0 0; font-size:14.5px; }
+.where { font-size:13px; color:var(--muted); }
+.kind { display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:100px; margin-bottom:8px; }
+.k-num { background:var(--disc-bg); color:var(--disc-ink); } .k-cite { background:var(--info-bg); color:var(--info-ink); } .k-word { background:var(--chip); color:var(--muted); }
+.was { text-decoration:line-through; color:var(--muted); }
+.how { background:var(--note-bg); color:var(--note-ink); border-left:4px solid var(--note-edge); border-radius:12px; padding:14px 16px; font-size:14.5px; line-height:1.6; margin-top:18px; }
+a { color:inherit; }
+.fine { font-size:12.5px; color:var(--muted); line-height:1.6; margin-top:34px; border-top:1px solid var(--line); padding-top:14px; }
+@media (max-width:640px) { .wrap { padding:24px 16px 50px; } }
+</style>
+</head>
+<body>
+<div class="hero" id="hero" data-light="day">
+  <header id="navMount"></header>
+  <main class="wrap" id="main">
+    <span class="eyebrow">Changes and corrections</span>
+    <h1>What we changed, and why</h1>
+    <p class="lead">Science corrects itself, and so does this lab. When we find a mistake, we fix it and record it here: what it said,
+      what it says now, and why. Results never change silently.</p>
+    <div class="how"><b>What never changes:</b> the rules written before each experiment (the pre-registration files). They record what we
+      decided before seeing any result, so they stay exactly as written, even when a page that describes them is corrected.</div>
+
+    <h2>21 November 2026: full claims check</h2>
+    <p>Every number on the lab was checked against its data files and recounted from the raw FlyWire data, one simulation was re-run
+      independently (it reproduced exactly), and every cited paper was checked for what it actually showed. The counts all held.
+      These are the things that needed fixing.</p>
+
+    <div class="entry"><span class="kind k-num">Number</span>
+      <h3>"Clavicle": drinking drop is 83%, range 81 to 85%</h3>
+      <p>Was: <span class="was">84% (95% range 82 to 85%)</span> in the notebook, the What's next page and the screen text.</p>
+      <p>Why: the true values are 83.496% and 81.48%. They had been rounded once when saved, and then rounded again for display, which pushed
+        them up a point. The Discovery table had shown the right 83% (81 to 85%) all along, but earlier the same day it was wrongly changed to match the
+        notebook. Now every page shows 83% (81 to 85%), and the saved values keep more decimal places so this can't happen again.</p>
+      <p class="where">Pages: Neuron Silencing Screen, What's next, Lab notebook.</p></div>
+
+    <div class="entry"><span class="kind k-num">Number</span>
+      <h3>CB0192 #2: 95% range is 37 to 45%</h3>
+      <p>Was: <span class="was">36 to 45%</span> in the notebook. Same double-rounding cause (true lower end: 36.50%).</p>
+      <p class="where">Pages: Neuron Silencing Screen, Lab notebook.</p></div>
+
+    <div class="entry"><span class="kind k-word">Overstatement</span>
+      <h3>Not all 8 predictions are strong leads</h3>
+      <p>Was: <span class="was">"Each of the 8 is a strong lead that still needs a living-fly experiment."</span></p>
+      <p>Now: all 8, including the 3 strong leads, still need a living-fly experiment. Only 3 of the 8 are rated Strong.</p>
+      <p class="where">Page: Neuron Silencing Screen.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>Bitter neurons: the study measured tongue extension, not drinking</h3>
+      <p>Was: <span class="was">"…and stopped drinking even of strong sugar (1 M)."</span> Now: stopped proboscis (tongue) extension, even to strong sugar.</p>
+      <p class="where">Pages: Lab notebook, experiments round 1 (E1). Source: Shiu et al. 2024.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>The name "MN9" came later than the 2009 paper</h3>
+      <p>Was: <span class="was">"MN9 is a motor neuron that drives proboscis extension" (Gordon &amp; Scott 2009).</span>
+        Now: a pair of sugar-activated motor neurons controls proboscis extension; later work named them MN9.</p>
+      <p class="where">Page: Calibration test.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>ppk28: what the paper showed</h3>
+      <p>Was: <span class="was">"Water-sensing neurons (ppk28) drive drinking."</span> Now: water-sensing taste neurons carry the water receptor ppk28;
+        they respond to water, and flies without ppk28 drink less. The paper did not test whether switching them on makes flies drink.</p>
+      <p class="where">Page: Calibration test. Source: Cameron et al. 2010.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>Bitter neurons (Gr66a): avoidance</h3>
+      <p>Was: <span class="was">"…does not, and suppresses extension."</span> Now: activating bitter neurons drives avoidance instead.</p>
+      <p class="where">Page: Calibration test. Source: Marella et al. 2006.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>The 91% figure</h3>
+      <p>Was: <span class="was">"91% of 164 predictions held in living flies."</span> Now: of the 164 predictions the authors could test in living flies, 91% held.</p>
+      <p class="where">Page: Calibration test. Source: Shiu et al. 2024.</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>Fudog also responds to sugar</h3>
+      <p>Was: <span class="was">"Fudog responds to water."</span> Now adds: it also responds to sugar. (The lab's water test of Fudog is unchanged.)</p>
+      <p class="where">Pages: Lab notebook, experiments round 1 (E5).</p></div>
+
+    <div class="entry"><span class="kind k-cite">Citation</span>
+      <h3>PPL2 dopamine neurons: calyx as well as lateral horn</h3>
+      <p>Was: <span class="was">"PPL2 reaches the lateral horn."</span> Now: PPL2 was traced to the calyx (where smells enter the mushroom body) and to the
+        lateral horn (Mao &amp; Davis 2009). In the FlyWire wiring itself, nearly half of PPL2's synapses are in the lateral horn, so the
+        data card now says "nearly half" instead of "mainly".</p>
+      <p class="where">Page: Parkinson's.</p></div>
+
+    <div class="entry"><span class="kind k-word">Wording</span>
+      <h3>Smaller wording fixes</h3>
+      <p>"Less than half their dopamine input" became "half or less" (what was actually counted). "Each dopamine neuron covers one
+        compartment" became "each type covers one, or at most two" (Aso et al. 2014). "Losses" in fly Parkinson's models became "damage",
+        closer to what one of the cited papers reports.</p>
+      <p class="where">Page: Parkinson's.</p></div>
+
+    <div class="entry"><span class="kind k-word">Sources</span>
+      <h3>Calibration page lists its own files</h3>
+      <p>The footer now links the calibration rules and results files as well as round 1's.</p>
+      <p class="where">Page: Calibration test.</p></div>
+
+    <p class="fine">Found something that looks wrong? Every number on the lab comes from a data file in the
+      <a href="https://github.com/romananeuroscience-art/TheVirtualNeuroLab">project's repository</a>, so it can be checked.</p>
+  </main>
+</div>
+<script src="../feather.js?v=17"></script>
+<script>
+Feather.topbar(document.getElementById('navMount'), { brand: 'The Virtual Neuro Lab', sub: 'Changes and corrections', base: '../', current: 'changes', profile: false });
+Feather.init();
+</script>
+</body>
+</html>
