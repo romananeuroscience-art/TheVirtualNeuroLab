@@ -92,14 +92,14 @@ ol.steps { padding-left:20px; display:flex; flex-direction:column; gap:10px; mar
 
     <h2 class="serif">Real-fly evidence this is checked against</h2>
     <ul>
-      <li>Activating sugar taste neurons (Gr5a) makes flies extend the proboscis; activating bitter neurons (Gr66a) does not, and suppresses extension. <span style="color:var(--muted)">(Marella et al. 2006, Neuron 49:285)</span></li>
-      <li>MN9 is a motor neuron that drives proboscis extension and responds to sugar. <span style="color:var(--muted)">(Gordon &amp; Scott 2009, Neuron 61:373)</span></li>
-      <li>Water-sensing neurons (ppk28) drive drinking. <span style="color:var(--muted)">(Cameron et al. 2010, Nature 465:91)</span></li>
-      <li>The same model on the FlyWire brain: sugar neurons at 100 Hz drive MN9 strongly; bitter suppresses it; 91% of 164 predictions held in living flies. <span style="color:var(--muted)">(Shiu et al. 2024, Nature 634:210)</span></li>
+      <li>Activating sugar taste neurons (Gr5a) makes flies extend the proboscis; activating bitter neurons (Gr66a) drives avoidance instead. <span style="color:var(--muted)">(Marella et al. 2006, Neuron 49:285)</span></li>
+      <li>A pair of motor neurons that responds to sugar controls proboscis extension; later work named them MN9. <span style="color:var(--muted)">(Gordon &amp; Scott 2009, Neuron 61:373)</span></li>
+      <li>Water-sensing taste neurons carry the water receptor ppk28: they respond to water, and flies without ppk28 drink less. <span style="color:var(--muted)">(Cameron et al. 2010, Nature 465:91)</span></li>
+      <li>The same model on the FlyWire brain: sugar neurons at 100 Hz drive MN9 strongly; bitter suppresses it; of the 164 predictions the authors could test in living flies, 91% held. <span style="color:var(--muted)">(Shiu et al. 2024, Nature 634:210)</span></li>
     </ul>
 
     <p class="fine">Engine: <span class="mono">tools/lif_engine.py</span> (the published model of Shiu et al. 2024, re-implemented and checked against the authors' own code).
-      Rules: <a href="round1_preregistration.json">round1_preregistration.json</a>. Results: <a href="round1.json">round1.json</a>.</p>
+      Rules: <a href="calibration_preregistration.json">calibration_preregistration.json</a>, <a href="calibration_preregistration_1b.json">calibration_preregistration_1b.json</a> and, for the FlyWire brain, <a href="round1_preregistration.json">round1_preregistration.json</a>. Results: <a href="calibration.json">calibration.json</a> and <a href="round1.json">round1.json</a>.</p>
   </main>
 </div>
 <script src="../feather.js?v=17"></script>
