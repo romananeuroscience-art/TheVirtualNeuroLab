@@ -15,7 +15,7 @@
    {
     "id": "E1",
     "title": "Does bitter beat even strong sugar?",
-    "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and stopped drinking even of strong sugar (1 M).",
+    "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and even to strong sugar (1 M).",
     "ref": "Shiu et al. 2024, optogenetics",
     "rule": "Bitter cuts MN9 firing by at least half for weak sugar AND for strong sugar."
    },
@@ -43,7 +43,7 @@
    {
     "id": "E5",
     "title": "Fudog responds to water",
-    "real": "Fudog responds to water (calcium imaging).",
+    "real": "Fudog responds to water (calcium imaging); it also responds to sugar.",
     "ref": "Shiu et al. 2024",
     "rule": "Fudog fires 5+ per second for water."
    },
@@ -114,7 +114,7 @@
   {
    "id": "E1",
    "title": "Does bitter beat even strong sugar?",
-   "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and stopped drinking even of strong sugar (1 M).",
+   "real": "Activating bitter neurons stopped proboscis extension to weak sugar (50 mM sucrose) and even to strong sugar (1 M).",
    "ref": "Shiu et al. 2024, optogenetics",
    "rule": "Bitter cuts MN9 firing by at least half for weak sugar AND for strong sugar.",
    "parts": [
@@ -194,7 +194,7 @@
   {
    "id": "E5",
    "title": "Fudog responds to water",
-   "real": "Fudog responds to water (calcium imaging).",
+   "real": "Fudog responds to water (calcium imaging); it also responds to sugar.",
    "ref": "Shiu et al. 2024",
    "rule": "Fudog fires 5+ per second for water.",
    "parts": [
