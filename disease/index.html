@@ -88,14 +88,14 @@ a { color:inherit; }
     <p class="lead" style="font-size:15px">Known biology, from experiments on real flies, which helps read the map above.</p>
     <div class="find">
       <div><h3>Dopamine teaches the learning centre</h3><p>Most fly dopamine neurons send their signal to the <b>mushroom body</b>, the fly's centre for learning and memory.
-        Each dopamine neuron covers one small compartment of it. There, dopamine changes how strongly Kenyon cells (which carry smells) talk to
+        Each type of dopamine neuron covers one, or at most two, small compartments of it. There, dopamine changes how strongly Kenyon cells (which carry smells) talk to
         the output neurons (MBONs), which is how a fly learns that a smell means food or danger.</p>
         <p class="src">Aso et al. 2014, <i>eLife</i>; review: Cognigni et al. 2018, <i>Curr Opin Neurobiol</i>.</p></div>
       <div><h3>Reward and punishment clusters</h3><p>The large <b>PAM</b> cluster mostly signals reward (such as sugar); the small <b>PPL1</b> cluster
-        mostly signals punishment. <b>PPL2</b> reaches the lateral horn, which handles inborn smell responses.</p>
-        <p class="src">Liu et al. 2012, <i>Nature</i>; Burke et al. 2012, <i>Nature</i>.</p></div>
+        mostly signals punishment. <b>PPL2</b> was traced to the calyx, where smell signals enter the mushroom body, and to the lateral horn, which handles inborn smell responses.</p>
+        <p class="src">Liu et al. 2012, <i>Nature</i>; Burke et al. 2012, <i>Nature</i>; PPL2: Mao &amp; Davis 2009, <i>Front Neural Circuits</i>.</p></div>
       <div><h3>Fly models of Parkinson's lose these cells</h3><p>Flies carrying human Parkinson's genes lose dopamine neurons as they age. Different
-        models report losses in different clusters, including PPL1 and PAM.</p>
+        models report damage in different clusters, including PPL1 and PAM.</p>
         <p class="src">Feany &amp; Bender 2000, <i>Nature</i>; Whitworth et al. 2005, <i>PNAS</i>; Riemensperger et al. 2013, <i>Cell Rep</i>.</p></div>
     </div>
 
@@ -222,10 +222,10 @@ const ppl1Rem = remainingAt('ppl1', C.ppl1), pamRem = remainingAt('pam', C.pam);
 const avgOf = r => r.reduce((a, b) => a + Math.max(0, b), 0) / nT, halfOf = r => r.reduce((a, b) => a + (b <= .5 ? 1 : 0), 0);
 const pc = D.per_cluster;
 $('find').innerHTML = [
-  ['A few cells, a huge reach', `The ${C.ppl1} PPL1 neurons are only ${Math.round(100 * C.ppl1 / C.dan)}% of the dopamine neurons, but they reach ${fmt(pc.PPL1.targets)} neurons. Losing all ${C.ppl1} leaves ${fmt(halfOf(ppl1Rem))} neurons with less than half their dopamine input. Losing all ${C.pam} PAM neurons does that to ${fmt(halfOf(pamRem))}.`],
+  ['A few cells, a huge reach', `The ${C.ppl1} PPL1 neurons are only ${Math.round(100 * C.ppl1 / C.dan)}% of the dopamine neurons, but they reach ${fmt(pc.PPL1.targets)} neurons. Losing all ${C.ppl1} leaves ${fmt(halfOf(ppl1Rem))} neurons with half or less of their dopamine input. Losing all ${C.pam} PAM neurons does that to ${fmt(halfOf(pamRem))}.`],
   ['Almost no backup', `${fmt(spof.n)} of the ${fmt(spof.total)} receiving neurons (${Math.round(100 * spof.n / spof.total)}%) get their dopamine from just one or two dopamine neurons. For them, a single cell's death removes their dopamine input entirely. Most are Kenyon cells of the mushroom body.`],
   ['The learning centre takes the hit', `${Math.round(100 * mbShare)}% of dopamine synapses land in the mushroom body: on Kenyon cells (${fmt(D.by_class.find(x => x.class === 'Kenyon_Cell')?.n || 0)} of them) and its output neurons (${fmt(D.by_class.find(x => x.class === 'MBON')?.n || 0)}). That is where the fly's memory of good and bad smells is written.`],
-  ['PPL2 serves inborn smell', `The ${C.ppl2} PPL2 neurons go somewhere else: mainly the lateral horn, which handles smell responses a fly is born with rather than learns.`],
+  ['PPL2 serves inborn smell', `The ${C.ppl2} PPL2 neurons go somewhere else: in this wiring map, nearly half of their synapses are in the lateral horn, which handles smell responses a fly is born with rather than learns.`],
   ['The fast taste reflex is untouched', FAST ? `In the brain simulation, removing all ${FAST.sugar.n_dan} dopamine neurons left the tongue reflex unchanged (sugar ${FAST.sugar.normal} → ${FAST.sugar.dopamine_removed} firings per second; water ${FAST.water.normal} → ${FAST.water.dopamine_removed}). None of the dopamine neurons fire to taste in this model, so the effect of losing them has to be looked for in learning, not in this reflex.` : 'Simulation check pending.'],
 ].map(([h, t]) => `<div><h3>${h}</h3><p>${t}</p></div>`).join('');
 $('fine').innerHTML = `Brain: FlyWire v783 (Dorkenwald et al. 2024; Schlegel et al. 2024). Dopamine neurons: FlyWire class "DAN" (${C.dan} neurons); dopamine neurons outside that class (such as the PPM and PAL clusters) are not included. Connections: FlyWire's table of connections with 5 or more synapses, ${fmt(C.edges)} links. Loss order: one fixed random order per pattern (the summary in the lab notebook averages 10 orders). Analysis plan written ${D.prereg.written.split(',')[0].replace('T', ' ').replace('Z', ' UTC')}, before the analysis was run: <a href="pd_preregistration.json">pd_preregistration.json</a>. Data: <a href="pd.json">pd.json</a>. Script: <span style="font-family:ui-monospace,Menlo,monospace">tools/build_pd.py</span>.`;
