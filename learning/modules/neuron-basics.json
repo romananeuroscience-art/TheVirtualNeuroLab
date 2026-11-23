@@ -1,0 +1,29 @@
+{
+  "id": "neuron-basics",
+  "status": "specification",
+  "objective": "Predict how excitatory and inhibitory inputs change threshold crossing in a simplified neuron model.",
+  "prerequisites": [
+    "Neuron structure",
+    "Electrical potential"
+  ],
+  "visual": {
+    "description": "Labeled neuron, membrane voltage trace and input controls",
+    "text_alternative": "A text description of the neuron and numerical membrane-voltage values accompany the interactive plot."
+  },
+  "interaction": {
+    "controls": [
+      "Excitatory input",
+      "Inhibitory input",
+      "Membrane threshold"
+    ],
+    "prediction": "Predict whether the neuron will cross threshold before running the model."
+  },
+  "assessment": {
+    "question": "What happens to threshold crossing when inhibitory input increases?",
+    "feedback": "Increasing inhibition generally makes threshold crossing less likely in this simplified model."
+  },
+  "model_disclaimer": "Leaky integrate-and-fire spikes are threshold events, not detailed ionic action-potential waveforms.",
+  "references": [],
+  "license_status": "pending-review",
+  "standards_mapping_status": "pending-review"
+}
