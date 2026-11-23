@@ -1,0 +1,52 @@
+{
+  "status": "proposed",
+  "audiences": [
+    "introductory college neuroscience",
+    "AP Biology",
+    "high-school biology"
+  ],
+  "standards_verified": false,
+  "modules": [
+    {
+      "id": "neuron-basics",
+      "title": "Neuron basics",
+      "sequence": 1,
+      "status": "planned",
+      "objectives": [
+        "Explain resting membrane potential and threshold",
+        "Interpret simplified action potential and refractory period",
+        "Predict excitatory and inhibitory summation"
+      ]
+    },
+    {
+      "id": "human-brain",
+      "title": "Human brain regional explorer",
+      "sequence": 2,
+      "status": "planned",
+      "objectives": [
+        "Identify major brain regions and functions",
+        "Connect evidence from classic cases to region-level function"
+      ]
+    },
+    {
+      "id": "rat-brain",
+      "title": "Rat brain regional explorer",
+      "sequence": 3,
+      "status": "planned",
+      "objectives": [
+        "Locate hippocampus and reward circuitry",
+        "Distinguish region atlases from cell-level maps"
+      ]
+    },
+    {
+      "id": "across-species",
+      "title": "Across species",
+      "sequence": 4,
+      "status": "planned",
+      "objectives": [
+        "Compare circuit functions across worm fly rat and human",
+        "Explain differences in evidence resolution and model assumptions"
+      ]
+    }
+  ]
+}
