@@ -1,0 +1,585 @@
+{
+ "written": "2026-11-21, before any stress run",
+ "rule": "needed = MN9 more than 20% below the same version's baseline; 30 repeats",
+ "note": "A version whose own baseline MN9 firing is below 10 per second (tongue never out) cannot test whether a neuron is needed; it is marked untestable for that taste.",
+ "neurons": [
+  {
+   "id": "720575940607272649",
+   "label": "\"Roundup\" #1",
+   "cond": "sugar"
+  },
+  {
+   "id": "720575940623211725",
+   "label": "\"Roundup\" #2",
+   "cond": "sugar"
+  },
+  {
+   "id": "720575940623211725",
+   "label": "\"Roundup\" #2",
+   "cond": "water"
+  },
+  {
+   "id": "720575940629888530",
+   "label": "CB0192 #2",
+   "cond": "water"
+  },
+  {
+   "id": "720575940632365905",
+   "label": "CB0051",
+   "cond": "water"
+  },
+  {
+   "id": "720575940638103349",
+   "label": "\"Rattle\"",
+   "cond": "water"
+  },
+  {
+   "id": "720575940610001220",
+   "label": "\"Bract\"",
+   "cond": "water"
+  },
+  {
+   "id": "720575940617593233",
+   "label": "CB0501",
+   "cond": "water"
+  },
+  {
+   "id": "720575940655014049",
+   "label": "\"Clavicle\"",
+   "cond": "water"
+  }
+ ],
+ "versions": {
+  "reference": {
+   "baseline": {
+    "sugar": 61.57,
+    "water": 30.7
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 40.23,
+     "drop": 0.3465,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 44.77,
+     "drop": 0.2729,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.6,
+     "drop": 0.9805,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 18.07,
+     "drop": 0.4115,
+     "needed": true
+    },
+    "720575940632365905|water": {
+     "mn9": 13.7,
+     "drop": 0.5537,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 21.6,
+     "drop": 0.2964,
+     "needed": true
+    },
+    "720575940610001220|water": {
+     "mn9": 20.13,
+     "drop": 0.3442,
+     "needed": true
+    },
+    "720575940617593233|water": {
+     "mn9": 17.47,
+     "drop": 0.4311,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 5.07,
+     "drop": 0.835,
+     "needed": true
+    }
+   }
+  },
+  "weaker_syn": {
+   "baseline": {
+    "sugar": 23.13,
+    "water": 0.0
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 7.87,
+     "drop": 0.6599,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 12.63,
+     "drop": 0.4539,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940629888530|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940632365905|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940638103349|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940610001220|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940617593233|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940655014049|water": {
+     "mn9": 0.0,
+     "drop": 0.0,
+     "needed": false
+    }
+   }
+  },
+  "stronger_syn": {
+   "baseline": {
+    "sugar": 74.8,
+    "water": 61.6
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 49.67,
+     "drop": 0.336,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 52.2,
+     "drop": 0.3021,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 24.47,
+     "drop": 0.6028,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 53.7,
+     "drop": 0.1282,
+     "needed": false
+    },
+    "720575940632365905|water": {
+     "mn9": 43.23,
+     "drop": 0.2982,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 61.77,
+     "drop": -0.0027,
+     "needed": false
+    },
+    "720575940610001220|water": {
+     "mn9": 55.4,
+     "drop": 0.1006,
+     "needed": false
+    },
+    "720575940617593233|water": {
+     "mn9": 52.4,
+     "drop": 0.1494,
+     "needed": false
+    },
+    "720575940655014049|water": {
+     "mn9": 28.6,
+     "drop": 0.5357,
+     "needed": true
+    }
+   }
+  },
+  "flip_nt_a": {
+   "baseline": {
+    "sugar": 42.67,
+    "water": 0.67
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 17.23,
+     "drop": 0.5961,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 28.1,
+     "drop": 0.3414,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.0,
+     "drop": 1.0,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 2.07,
+     "drop": -2.1,
+     "needed": false
+    },
+    "720575940632365905|water": {
+     "mn9": 0.0,
+     "drop": 1.0,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 0.67,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940610001220|water": {
+     "mn9": 0.67,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940617593233|water": {
+     "mn9": 0.07,
+     "drop": 0.9,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 0.0,
+     "drop": 1.0,
+     "needed": true
+    }
+   }
+  },
+  "flip_nt_b": {
+   "baseline": {
+    "sugar": 98.57,
+    "water": 19.6
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 68.43,
+     "drop": 0.3057,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 49.77,
+     "drop": 0.4951,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.67,
+     "drop": 0.966,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 19.17,
+     "drop": 0.0221,
+     "needed": false
+    },
+    "720575940632365905|water": {
+     "mn9": 15.73,
+     "drop": 0.1973,
+     "needed": false
+    },
+    "720575940638103349|water": {
+     "mn9": 14.87,
+     "drop": 0.2415,
+     "needed": true
+    },
+    "720575940610001220|water": {
+     "mn9": 19.6,
+     "drop": 0.0,
+     "needed": false
+    },
+    "720575940617593233|water": {
+     "mn9": 2.03,
+     "drop": 0.8963,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 0.97,
+     "drop": 0.9507,
+     "needed": true
+    }
+   }
+  },
+  "drop_weak": {
+   "baseline": {
+    "sugar": 61.2,
+    "water": 22.13
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 42.5,
+     "drop": 0.3056,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 44.57,
+     "drop": 0.2718,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.6,
+     "drop": 0.9729,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 13.23,
+     "drop": 0.4021,
+     "needed": true
+    },
+    "720575940632365905|water": {
+     "mn9": 5.17,
+     "drop": 0.7666,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 16.47,
+     "drop": 0.256,
+     "needed": true
+    },
+    "720575940610001220|water": {
+     "mn9": 16.97,
+     "drop": 0.2334,
+     "needed": true
+    },
+    "720575940617593233|water": {
+     "mn9": 15.6,
+     "drop": 0.2952,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 1.13,
+     "drop": 0.9488,
+     "needed": true
+    }
+   }
+  },
+  "inputs_a": {
+   "baseline": {
+    "sugar": 44.7,
+    "water": 12.0
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 20.07,
+     "drop": 0.5511,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 28.67,
+     "drop": 0.3587,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.13,
+     "drop": 0.9889,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 3.83,
+     "drop": 0.6806,
+     "needed": true
+    },
+    "720575940632365905|water": {
+     "mn9": 6.83,
+     "drop": 0.4306,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 3.5,
+     "drop": 0.7083,
+     "needed": true
+    },
+    "720575940610001220|water": {
+     "mn9": 3.7,
+     "drop": 0.6917,
+     "needed": true
+    },
+    "720575940617593233|water": {
+     "mn9": 4.0,
+     "drop": 0.6667,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 2.93,
+     "drop": 0.7556,
+     "needed": true
+    }
+   }
+  },
+  "inputs_b": {
+   "baseline": {
+    "sugar": 47.3,
+    "water": 17.43
+   },
+   "knockouts": {
+    "720575940607272649|sugar": {
+     "mn9": 26.33,
+     "drop": 0.4433,
+     "needed": true
+    },
+    "720575940623211725|sugar": {
+     "mn9": 32.67,
+     "drop": 0.3094,
+     "needed": true
+    },
+    "720575940623211725|water": {
+     "mn9": 0.13,
+     "drop": 0.9924,
+     "needed": true
+    },
+    "720575940629888530|water": {
+     "mn9": 6.3,
+     "drop": 0.6386,
+     "needed": true
+    },
+    "720575940632365905|water": {
+     "mn9": 7.73,
+     "drop": 0.5564,
+     "needed": true
+    },
+    "720575940638103349|water": {
+     "mn9": 7.3,
+     "drop": 0.5813,
+     "needed": true
+    },
+    "720575940610001220|water": {
+     "mn9": 8.73,
+     "drop": 0.499,
+     "needed": true
+    },
+    "720575940617593233|water": {
+     "mn9": 7.8,
+     "drop": 0.5526,
+     "needed": true
+    },
+    "720575940655014049|water": {
+     "mn9": 2.2,
+     "drop": 0.8738,
+     "needed": true
+    }
+   }
+  }
+ },
+ "summary": {
+  "720575940607272649|sugar": {
+   "label": "\"Roundup\" #1",
+   "cond": "sugar",
+   "held": 7,
+   "testable": 7,
+   "untestable": [],
+   "failed_in": []
+  },
+  "720575940623211725|sugar": {
+   "label": "\"Roundup\" #2",
+   "cond": "sugar",
+   "held": 7,
+   "testable": 7,
+   "untestable": [],
+   "failed_in": []
+  },
+  "720575940623211725|water": {
+   "label": "\"Roundup\" #2",
+   "cond": "water",
+   "held": 5,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": []
+  },
+  "720575940629888530|water": {
+   "label": "CB0192 #2",
+   "cond": "water",
+   "held": 3,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": [
+    "stronger_syn",
+    "flip_nt_b"
+   ]
+  },
+  "720575940632365905|water": {
+   "label": "CB0051",
+   "cond": "water",
+   "held": 4,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": [
+    "flip_nt_b"
+   ]
+  },
+  "720575940638103349|water": {
+   "label": "\"Rattle\"",
+   "cond": "water",
+   "held": 4,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": [
+    "stronger_syn"
+   ]
+  },
+  "720575940610001220|water": {
+   "label": "\"Bract\"",
+   "cond": "water",
+   "held": 3,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": [
+    "stronger_syn",
+    "flip_nt_b"
+   ]
+  },
+  "720575940617593233|water": {
+   "label": "CB0501",
+   "cond": "water",
+   "held": 4,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": [
+    "stronger_syn"
+   ]
+  },
+  "720575940655014049|water": {
+   "label": "\"Clavicle\"",
+   "cond": "water",
+   "held": 5,
+   "testable": 5,
+   "untestable": [
+    "weaker_syn",
+    "flip_nt_a"
+   ],
+   "failed_in": []
+  }
+ }
+}
