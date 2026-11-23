@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuron Basics · The Virtual Neuro Lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%230064e0'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../vendor/fonts/fonts.css?v=2">
+<link rel="stylesheet" href="../feather.css?v=12">
+<style>
+.hero { min-height:100dvh; background:var(--bg); color:var(--ink); }
+.wrap { max-width:1040px; margin:0 auto; padding:34px 22px 60px; }
+h1 { font-size:clamp(30px,4.4vw,46px); line-height:1.06; margin:8px 0 12px; }
+h2 { font-size:26px; margin:48px 0 6px; }
+h3 { font-size:17px; margin:0 0 6px; letter-spacing:-.01em; }
+.lead { font-size:16px; line-height:1.6; color:var(--muted); margin:0; }
+p, li { font-size:15px; line-height:1.6; }
+.sec-lead { color:var(--muted); margin:0 0 14px; }
+.bench { background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:16px 18px; }
+.plot { width:100%; height:300px; display:block; }
+.plot.small { height:150px; }
+.plot[hidden], .ctrl[hidden] { display:none; }
+.ctrls { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px 18px; margin:6px 0 12px; }
+.ctrl label, .ctrl .lab { display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
+.ctrl small { font-weight:400; color:var(--muted); }
+.ctrl input[type=range] { width:100%; accent-color:var(--sage); }
+.seg { display:flex; gap:6px; flex-wrap:wrap; }
+.seg button { flex:1; min-width:80px; background:var(--chip); border:1px solid var(--line); border-radius:10px; padding:8px 6px; cursor:pointer; font-size:13.5px; }
+.seg button[aria-pressed="true"] { background:var(--sage); color:var(--sage-ink); border-color:transparent; font-weight:700; }
+.run { background:var(--sage); color:var(--sage-ink); border:none; border-radius:100px; padding:10px 22px; font-weight:700; font-size:15px; cursor:pointer; }
+.row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.readout { font-size:15px; line-height:1.55; margin:10px 0 0; min-height:2.6em; }
+.readout b { font-weight:700; }
+.legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin:4px 0 0; }
+.legend i { display:inline-block; width:18px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px; }
+.check { font-size:14px; display:flex; align-items:center; gap:8px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+.card p { margin:0; font-size:14.5px; }
+.try { align-self:flex-start; margin-top:auto; background:var(--chip); border:1px solid var(--line); border-radius:100px; padding:7px 14px; font-weight:600; font-size:13.5px; cursor:pointer; }
+.try:hover { border-color:var(--sage); }
+.label { display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:100px; background:var(--info-bg); color:var(--info-ink); }
+.q { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:16px; margin:12px 0; }
+.q .opts { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; }
+.q .opts button { background:var(--chip); border:1px solid var(--line); border-radius:10px; padding:8px 14px; cursor:pointer; font-size:14px; }
+.q .opts button[data-picked="right"] { background:var(--ok-bg); color:var(--ok-ink); border-color:transparent; font-weight:700; }
+.q .opts button[data-picked="wrong"] { background:var(--err-bg); color:var(--err-ink); border-color:transparent; }
+.q .fb { margin:6px 0 0; font-size:14.5px; }
+.how { background:var(--note-bg); color:var(--note-ink); border-left:4px solid var(--note-edge); border-radius:12px; padding:14px 16px; font-size:14.5px; line-height:1.6; margin-top:14px; }
+.limits { background:var(--warn-bg); color:var(--warn-ink); border-radius:12px; padding:14px 16px; font-size:14.5px; line-height:1.6; margin-top:14px; }
+a { color:inherit; }
+.fine { font-size:12.5px; color:var(--muted); line-height:1.6; margin-top:34px; border-top:1px solid var(--line); padding-top:14px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+@media (max-width:640px) { .wrap { padding:24px 16px 50px; } .plot { height:240px; } }
+</style>
+</head>
+<body>
+<div class="hero" id="hero" data-light="day">
+  <header id="navMount"></header>
+  <main class="wrap" id="main">
+    <span class="eyebrow">Neuron basics</span>
+    <h1>How a neuron fires</h1>
+    <p class="lead">Every brain in this lab, from the worm to the fly, is built from one kind of part: the neuron. Here you can poke a single
+      simulated neuron and watch its voltage. Push it a little and nothing happens. Push it past a tipping point and it fires an
+      <b>action potential</b>, the signal neurons use to talk.</p>
+
+    <h2 id="see">1. Make it fire</h2>
+    <p class="sec-lead">Choose how to stimulate the neuron, then press Run. The line shows the voltage across its membrane over 60 milliseconds.</p>
+    <div class="bench" id="bench1">
+      <div class="ctrls">
+        <div class="ctrl"><span class="lab">Stimulus</span>
+          <div class="seg" id="stimType" role="group" aria-label="Stimulus type">
+            <button type="button" data-v="one" aria-pressed="true">One pulse</button>
+            <button type="button" data-v="two" aria-pressed="false">Two pulses</button>
+            <button type="button" data-v="steady" aria-pressed="false">Steady</button>
+          </div></div>
+        <div class="ctrl"><label for="amp">Strength <small id="ampOut"></small></label>
+          <input type="range" id="amp" min="0" max="40" step="0.5" value="10"></div>
+        <div class="ctrl" id="gapCtrl" hidden><label for="gap">Gap between pulses <small id="gapOut"></small></label>
+          <input type="range" id="gap" min="2" max="30" step="1" value="15"></div>
+        <div class="ctrl"><span class="lab">Neuron model</span>
+          <div class="seg" id="model" role="group" aria-label="Neuron model">
+            <button type="button" data-v="hh" aria-pressed="true">Real neuron</button>
+            <button type="button" data-v="lif" aria-pressed="false">Simplified</button>
+            <button type="button" data-v="both" aria-pressed="false">Both</button>
+          </div></div>
+      </div>
+      <div class="row"><button class="run" id="run1" type="button">▶ Run</button>
+        <label class="check"><input type="checkbox" id="showCh"> Show the ion channels</label></div>
+      <canvas class="plot" id="plot1" role="img" aria-label="Voltage of the simulated neuron over time"></canvas>
+      <canvas class="plot small" id="plotCh" hidden role="img" aria-label="Fraction of sodium and potassium channels open over time"></canvas>
+      <div class="legend" id="legend1"></div>
+      <p class="readout" id="out1" aria-live="polite"></p>
+    </div>
+
+    <h2 id="understand">2. What you just saw</h2>
+    <p class="sec-lead">Four ideas explain almost everything a single neuron does. Each card loads an experiment into the bench above.</p>
+    <div class="cards">
+      <div class="card"><span class="label">Resting potential</span><h3>A neuron is a tiny battery</h3>
+        <p>At rest, the inside sits about 65 millivolts more negative than the outside. Pumps and leaky potassium channels keep it there.
+          With no stimulus, the line stays flat.</p><button class="try" data-preset="rest" type="button">Try it: no stimulus</button></div>
+      <div class="card"><span class="label">Threshold</span><h3>All or nothing</h3>
+        <p>A weak push makes a small bump that fades. Past a tipping point, sodium channels fly open, sodium rushes in, and the voltage
+          shoots up to about +40 mV. A stronger push does not make a bigger spike, just the same spike.</p>
+        <button class="try" data-preset="weak" type="button">Try it: weak pulse</button>
+        <button class="try" data-preset="strong" type="button">Then: strong pulse</button></div>
+      <div class="card"><span class="label">Repolarisation</span><h3>Up, down, and a dip</h3>
+        <p>Sodium channels shut themselves, potassium channels open and potassium flows out. The voltage falls, overshoots below rest
+          (the dip), then settles. Tick "Show the ion channels" to watch both.</p>
+        <button class="try" data-preset="channels" type="button">Try it: show channels</button></div>
+      <div class="card"><span class="label">Refractory period</span><h3>A moment to recover</h3>
+        <p>Right after a spike, the neuron cannot fire again, even if pushed: its sodium channels are still locked shut. A second pulse
+          only works once they recover.</p>
+        <button class="try" data-preset="refr-short" type="button">Try it: pulses 4 ms apart</button>
+        <button class="try" data-preset="refr-long" type="button">Then: 15 ms apart</button></div>
+      <div class="card"><span class="label">Coding strength</span><h3>Stronger means faster, not bigger</h3>
+        <p>Because every spike is the same size, a neuron signals "stronger" by firing more often. Hold a steady current on and turn it up.</p>
+        <button class="try" data-preset="rate-low" type="button">Try it: gentle steady</button>
+        <button class="try" data-preset="rate-high" type="button">Then: strong steady</button></div>
+    </div>
+
+    <h2 id="synapses">3. Neurons add up their inputs</h2>
+    <p class="sec-lead">Neurons get their pushes from other neurons, through synapses. An <b>excitatory</b> synapse nudges the voltage up; an
+      <b>inhibitory</b> one pulls it down. The receiving neuron adds them all up, and only fires if the total crosses threshold.</p>
+    <div class="bench" id="bench2">
+      <div class="ctrls">
+        <div class="ctrl"><span class="lab">Inputs</span>
+          <div class="seg" id="synSet" role="group" aria-label="Synaptic inputs">
+            <button type="button" data-v="one" aria-pressed="true">One excitatory</button>
+            <button type="button" data-v="two" aria-pressed="false">Two excitatory</button>
+          </div></div>
+        <div class="ctrl" id="delayCtrl"><label for="delay">Time between the two <small id="delayOut"></small></label>
+          <input type="range" id="delay" min="0" max="25" step="1" value="0"></div>
+        <div class="ctrl"><span class="lab">Inhibition</span>
+          <label class="check"><input type="checkbox" id="inh"> Add an inhibitory input, arriving just before</label></div>
+      </div>
+      <div class="row"><button class="run" id="run2" type="button">▶ Run</button></div>
+      <canvas class="plot" id="plot2" role="img" aria-label="Voltage of the receiving neuron, with input times marked"></canvas>
+      <div class="legend"><span><i style="background:var(--sage)"></i>Receiving neuron</span>
+        <span><span style="color:var(--teal)">▲</span> excitatory input</span><span><span style="color:var(--danger)">▲</span> inhibitory input</span></div>
+      <p class="readout" id="out2" aria-live="polite"></p>
+      <div class="how"><b>Two kinds of adding up.</b> <i>Spatial summation:</i> two inputs arriving at the same moment from different neurons.
+        <i>Temporal summation:</i> inputs arriving close together in time, before the first bump has faded. Try a time between them of
+        0, 3 and 20 ms.</div>
+    </div>
+
+    <h2 id="predict">4. Predict, then check</h2>
+    <p class="sec-lead">Make a guess first. Then load the experiment and see if you were right.</p>
+    <div id="quiz"></div>
+
+    <h2 id="bridge">5. From one neuron to a whole brain</h2>
+    <p>The fly brain in this lab is 139,255 neurons, each following the <b>simplified</b> rule you can switch on above: add up the inputs,
+      fire when the voltage crosses a threshold, reset, rest for a moment. Each synapse adds a fixed push (0.275 mV) for every
+      synaptic contact, and inhibitory neurons push down instead of up. That is enough to make the simulated fly put out its tongue
+      for sugar and hold it in for bitter.</p>
+    <p>Why use the simplified neuron? The real one needs four equations and tiny time steps. Doing that for 139,255 neurons would be far
+      slower. The simplified neuron keeps what matters for passing signals along (threshold, firing, timing) and drops the shape of the spike.</p>
+    <div class="row" style="margin-top:6px"><a class="try" href="../discover/" style="text-decoration:none">Open the Neuron Silencing Screen →</a>
+      <a class="try" href="../flies/" style="text-decoration:none">Meet the fly in the Vivarium →</a></div>
+
+    <div class="limits"><b>What this simulation doesn't tell you.</b> The "real neuron" is the Hodgkin–Huxley model of a squid's giant axon
+      at 6.3 °C. Human and fly neurons have more kinds of channels, branches and timing, so the numbers differ. The synapses here are
+      simple and illustrative. The simplified neuron's input scale was chosen to make the comparison easy to see; it isn't a measured value.
+      This is a model to build intuition, not a recording from a real cell.</div>
+
+    <p class="fine">Real neuron: Hodgkin &amp; Huxley 1952, <i>J Physiol</i> 117:500, in the standard modern form (rest −65 mV; sodium
+      120, potassium 36, leak 0.3 mS/cm²; reversal potentials +50, −77, −54.4 mV). Simplified neuron: the leaky integrate-and-fire model
+      used for the fly brain (Shiu et al. 2024, <i>Nature</i> 634:210): rest and reset −52 mV, threshold −45 mV, 20 ms membrane time
+      constant, 2.2 ms refractory period. Strength is injected current in µA/cm². Everything on this page is computed live in your
+      browser (<a href="neuron.js">neuron.js</a>).</p>
+  </main>
+</div>
+<script src="../feather.js?v=18"></script>
+<script src="neuron.js?v=1"></script>
+<script>
+Feather.topbar(document.getElementById('navMount'), { brand: 'The Virtual Neuro Lab', sub: 'Neuron basics', base: '../', current: 'neuron', profile: false });
+Feather.init();
+(() => {
+  const S = NeuronSim, $ = id => document.getElementById(id);
+  const col = n => S.css(document.getElementById('hero'), n);
+  const seg = (id, on) => { const el = $(id); el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+    el.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); on && on(b.dataset.v); }); };
+  const val = id => $(id).querySelector('[aria-pressed="true"]').dataset.v;
+  const setSeg = (id, v) => $(id).querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.v === v)));
+  const fmt = x => (x > 0 ? '+' : '') + Math.round(x);
+
+  /* ---------- bench 1 ---------- */
+  const stimFn = () => {
+    const a = +$('amp').value, type = val('stimType'), gap = +$('gap').value;
+    if (type === 'steady') return t => (t >= 5 ? a : 0);
+    if (type === 'two') return t => ((t >= 5 && t < 6) || (t >= 5 + gap && t < 6 + gap) ? a : 0);
+    return t => (t >= 5 && t < 6 ? a : 0);
+  };
+  const labels1 = () => {
+    $('ampOut').textContent = '(' + (+$('amp').value).toFixed(1) + ')';
+    $('gapOut').textContent = '(' + $('gap').value + ' ms)';
+    $('gapCtrl').hidden = val('stimType') !== 'two';
+  };
+  function run1() {
+    labels1();
+    const stim = stimFn(), model = val('model'), T = 60;
+    const hh = model !== 'lif' ? S.runHH({ T, stim }) : null;
+    const lif = model !== 'hh' ? S.runLIF({ T, stim }) : null;
+    const series = [], lines = [], leg = [];
+    if (hh) { series.push({ t: hh.t, v: hh.v, color: col('--sage') }); leg.push(`<span><i style="background:${col('--sage')}"></i>Real neuron (Hodgkin–Huxley)</span>`); }
+    if (lif) { series.push({ t: lif.t, v: lif.v, color: col('--amber'), spikeMarks: lif.spikes, spikeFrom: S.LIF.vth, spikeTo: 20 });
+      lines.push({ v: S.LIF.vth, text: 'simplified threshold (−45 mV)', color: col('--amber') });
+      leg.push(`<span><i style="background:${col('--amber')}"></i>Simplified neuron (as in the fly brain); spikes drawn as ticks</span>`); }
+    $('legend1').innerHTML = leg.join('');
+    const type = val('stimType');
+    const marks = type === 'steady' ? [] : [{ t: 5, color: col('--teal') }].concat(type === 'two' ? [{ t: 5 + +$('gap').value, color: col('--teal') }] : []);
+    const showCh = $('showCh').checked && hh;
+    $('plotCh').hidden = !showCh;
+    S.animate(p => {
+      S.plot($('plot1'), { series, lines, marks, progress: p });
+      if (showCh) S.plot($('plotCh'), { series: [{ t: hh.t, v: hh.na, color: col('--danger') }, { t: hh.t, v: hh.k, color: col('--teal') }],
+        vMin: 0, vMax: 1, yTicks: [0, 0.5, 1], label: 'Open', progress: p });
+    });
+    // plain-language result (also the text alternative to the chart)
+    const parts = [];
+    if (hh) {
+      const peak = Math.max(...hh.v), low = Math.min(...hh.v.slice(50));
+      if (!hh.spikes.length) parts.push(`<b>Real neuron: no action potential.</b> The voltage rose to ${fmt(peak)} mV and fell back. It didn't reach the tipping point.`);
+      else {
+        let s = `<b>Real neuron: fired ${hh.spikes.length} time${hh.spikes.length > 1 ? 's' : ''}.</b> ${hh.spikes.length > 1 ? 'Each spike' : 'The spike'} peaked near ${fmt(peak)} mV, then dipped to ${fmt(low)} mV before settling.`;
+        if (type === 'two' && hh.spikes.length === 1) s += ' The second pulse came too soon: the neuron was still recovering (refractory period).';
+        if (type === 'steady' && hh.spikes.length > 1) s += ` That's about ${Math.round(1000 * (hh.spikes.length - 1) / (hh.spikes[hh.spikes.length - 1] - hh.spikes[0]))} spikes per second.`;
+        parts.push(s);
+      }
+    }
+    if (lif) parts.push(lif.spikes.length ? `<b>Simplified neuron: fired ${lif.spikes.length} time${lif.spikes.length > 1 ? 's' : ''}.</b> It just records a spike when it crosses −45 mV and resets to −52 mV; it has no spike shape.`
+      : `<b>Simplified neuron: no spike.</b> It never crossed its −45 mV threshold.`);
+    if (showCh) parts.push('<span style="color:var(--muted)">Lower chart: share of sodium channels open (red) and potassium channels open (green).</span>');
+    $('out1').innerHTML = parts.join('<br>');
+  }
+  seg('stimType', () => { labels1(); }); seg('model');
+  ['amp', 'gap'].forEach(id => $(id).addEventListener('input', labels1));
+  $('run1').addEventListener('click', run1);
+  $('showCh').addEventListener('change', run1);
+
+  const PRESETS = {
+    rest: { type: 'one', amp: 0, model: 'hh' }, weak: { type: 'one', amp: 5, model: 'hh' }, strong: { type: 'one', amp: 20, model: 'hh' },
+    channels: { type: 'one', amp: 20, model: 'hh', ch: true }, 'refr-short': { type: 'two', amp: 20, gap: 4, model: 'hh' },
+    'refr-long': { type: 'two', amp: 20, gap: 15, model: 'hh' }, 'rate-low': { type: 'steady', amp: 7, model: 'hh' },
+    'rate-high': { type: 'steady', amp: 30, model: 'hh' }, 'q-bigger': { type: 'one', amp: 40, model: 'hh' },
+  };
+  function load(name, scroll = true) {
+    const p = PRESETS[name]; setSeg('stimType', p.type); setSeg('model', p.model); $('amp').value = p.amp;
+    if (p.gap) $('gap').value = p.gap; $('showCh').checked = !!p.ch; run1();
+    if (scroll) $('bench1').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.querySelectorAll('.try[data-preset]').forEach(b => b.addEventListener('click', () => load(b.dataset.preset)));
+
+  /* ---------- bench 2 ---------- */
+  function run2() {
+    const two = val('synSet') === 'two', d = +$('delay').value, inh = $('inh').checked;
+    $('delayCtrl').hidden = !two; $('delayOut').textContent = '(' + d + ' ms)';
+    const syn = [{ t: 5, kind: 'E' }].concat(two ? [{ t: 5 + d, kind: 'E' }] : []).concat(inh ? [{ t: 4, kind: 'I' }] : []);
+    const r = S.runHH({ T: 50, syn });
+    const marks = syn.map(s => ({ t: s.t, color: s.kind === 'E' ? col('--teal') : col('--danger') }));
+    S.animate(p => S.plot($('plot2'), { series: [{ t: r.t, v: r.v, color: col('--sage') }], marks, tMax: 50, progress: p }), 1100);
+    const peak = Math.max(...r.v);
+    let msg = r.spikes.length ? `<b>It fired.</b> The inputs added up past threshold.` : `<b>No spike.</b> The voltage only reached ${fmt(peak)} mV.`;
+    if (!two && !inh) msg += ' One excitatory input on its own makes only a small bump.';
+    if (two && d <= 4 && !inh) msg += d === 0 ? ' Two inputs at once (spatial summation).' : ' The second bump landed on top of the first (temporal summation).';
+    if (two && d >= 12 && !inh) msg += ' The first bump had faded before the second arrived, so they never added up.';
+    if (inh) msg += ' The inhibitory input pulled the voltage down, cancelling part of the excitation.';
+    $('out2').innerHTML = msg;
+  }
+  seg('synSet', run2); $('delay').addEventListener('input', run2); $('inh').addEventListener('change', run2); $('run2').addEventListener('click', run2);
+  function loadSyn(set, d, inh) { setSeg('synSet', set); $('delay').value = d; $('inh').checked = inh; run2(); $('bench2').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+  /* ---------- predict, then check ---------- */
+  const Q = [
+    { q: 'You double the strength of a pulse that already makes the neuron fire. What happens to the spike?',
+      opts: ['It gets about twice as tall', 'It stays about the same height', 'It disappears'], right: 1,
+      why: 'All or nothing: once threshold is crossed, the spike is the same size. Strength changes how often a neuron fires, not how big each spike is.',
+      check: () => load('q-bigger') },
+    { q: 'Two strong pulses arrive 4 ms apart. How many spikes?', opts: ['One', 'Two'], right: 0,
+      why: 'Refractory period: right after a spike, sodium channels are locked shut for a while, so the second pulse is ignored.', check: () => load('refr-short') },
+    { q: 'One excitatory input makes a small bump. What do two of them arriving at the same moment do?', opts: ['Still just a bump', 'Can make it fire'], right: 1,
+      why: 'Spatial summation: the two bumps add up, and together they cross threshold.', check: () => loadSyn('two', 0, false) },
+    { q: 'Same two excitatory inputs, plus an inhibitory one arriving at about the same time. Fire or not?', opts: ['Fires', 'Doesn’t fire'], right: 1,
+      why: 'Inhibition subtracts: it pulls the voltage down, so the total stays below threshold.', check: () => loadSyn('two', 0, true) },
+  ];
+  $('quiz').innerHTML = Q.map((x, i) => `<div class="q" data-i="${i}"><b>${i + 1}. ${x.q}</b><div class="opts">${x.opts.map((o, j) =>
+    `<button type="button" data-j="${j}">${o}</button>`).join('')}</div><p class="fb" aria-live="polite"></p></div>`).join('');
+  $('quiz').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return; const box = b.closest('.q'), x = Q[+box.dataset.i];
+    if (b.dataset.check) return x.check();
+    const ok = +b.dataset.j === x.right;
+    box.querySelectorAll('.opts button').forEach(o => o.removeAttribute('data-picked'));
+    b.dataset.picked = ok ? 'right' : 'wrong';
+    box.querySelector('.fb').innerHTML = `<b>${ok ? 'Right.' : 'Not quite.'}</b> ${x.why} <button type="button" class="try" data-check="1">See it in the bench</button>`;
+  });
+
+  labels1(); run1(); run2();
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { run1(); run2(); }, 200); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-light-toggle]')) setTimeout(() => { run1(); run2(); }, 50); });
+})();
+</script>
+</body>
+</html>
