@@ -5,13 +5,15 @@
 - **Owner and final say:** Romana. Nothing goes live and no decision is final until she approves it.
 - **Team:** Romana (founder), Claude (Anthropic), ChatGPT (OpenAI).
 - **Live site:** https://romananeuroscience-art.github.io/TheVirtualNeuroLab/
-- **Last updated:** 2026-11-21 by Claude
+- **Last updated:** 2026-11-23 by Claude
 
 ---
 
 ## 1. What we are trying to do
 
 **Now:** make the lab a proper **study tool** for learning how a real brain's wiring produces behaviour.
+
+**Audience (decided 2026-11-23):** intro college neuroscience, and AP or high-school biology. The lab should cover what those syllabi teach, including the **human and rat brain**, not only the fly and the worm.
 
 **Later:** a real business, such as paid licences for courses, schools or museums, and possibly a sale of the business one day. That only happens if the licensing question (section 4) is settled first.
 
@@ -75,12 +77,18 @@
 | 8 | Find 2–3 teachers of intro neuroscience or biology for a free pilot | Romana (AIs help find and draft) | To do |
 | 9 | Rebuild-everything package: one command, pinned versions, missing input files, Zenodo archive | Claude | Later |
 | 10 | Find a fly lab willing to test a prediction (CB0051, CB0192 #2, CB0501) | Romana (AIs draft) | After task 3 |
+| 11 | **Neuron basics** module: one simulated neuron (resting potential, threshold, action potential, refractory period, excitatory and inhibitory synapses, summation). It's the core of AP Biology, it uses the same rules as the fly model, and it has no licensing issues. | Proposed, owner TBD | Proposed |
+| 12 | **Human brain explorer**: 3D regions (lobes, brainstem, cerebellum, limbic system, basal ganglia), what each does, classic cases (H.M., Phineas Gage, Broca and Wernicke), region-to-region pathways. First find an atlas whose licence allows our use. | Proposed, owner TBD | Proposed |
+| 13 | **Rat brain explorer**: Waxholm Space rat atlas (CC BY 4.0); hippocampus and memory (place cells, water maze), the reward circuit (links to the fly's dopamine and Parkinson's pages); region-to-region wiring (licence to check). | Proposed, owner TBD | Proposed |
+| 14 | **Across species**: the same function in worm, fly, rat and human (e.g. reward, smell), and the "zoom levels" of what is mapped. Worm and fly are cell by cell, rat and human are by region; say clearly that these can't be compared like for like. | Proposed, owner TBD | Proposed |
 
 ## 6. Decisions made
 
 - 2026-11-20: "Ask Claude" stays local-only. A public version would need a server middleman and a spending cap (deferred).
 - 2026-11-21: For now the lab is a study tool, not a research tool (see the known limits in section 4).
 - 2026-11-21: ChatGPT and Claude work through branches and pull requests, plus this file. Romana merges.
+- 2026-11-23: Audience is intro college neuroscience plus AP and high-school biology; add human and rat brains (tasks 11-14, proposed order 11, 12, 13, 14).
+- Facts for tasks 12-13: no neuron-by-neuron map exists for a whole rat or human brain. Rat and human content works at the level of regions, plus small detailed pieces (Blue Brain rat cortex model: CC BY-NC; H01 human cortex sample, about 1 mm³). Human Connectome Project raw data has restrictive terms (registration, no free re-sharing), so use published summary maps with clear licences.
 
 ## 7. Open questions for Romana
 
@@ -91,3 +99,5 @@
 ## 8. Log
 
 - 2026-11-21 (Claude): Created TEAM.md. Claims check done; fixes in commits of 2026-11-20 and 21.
+- 2026-11-21 (Claude): PR #2 opened (corrections page). Stress test (task 3) run. Results: sugar predictions held in 7 of 7 perturbed versions. For drinking, 2 of 7 versions lost drinking entirely (untestable); of the other 5, Roundup #2 and Clavicle held in 5 of 5, CB0051, CB0501 and Rattle in 4 of 5, CB0192 #2 and Bract in 3 of 5. Not yet on any page.
+- 2026-11-23 (Claude): Added syllabus audience and tasks 11-14 (proposed). ChatGPT's strategy PR #1 read; Claude's response drafted, awaiting Romana's OK to post.
