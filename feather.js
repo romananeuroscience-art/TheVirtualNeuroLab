@@ -2,6 +2,7 @@
 window.Feather = (() => {
   const HUBS = [
     { id: 'home', name: 'Home', sub: 'start here', icon: 'i-house', href: 'index.html' },
+    { id: 'neuron', name: 'Neuron basics', sub: 'how a neuron fires', icon: 'i-neuron', href: 'neuron/' },
     { id: 'discover', name: 'Neuron Silencing Screen', sub: 'switch off a neuron', icon: 'i-fly', href: 'discover/' },
     { id: 'disease', name: 'Parkinson\u2019s', sub: 'brain disease', icon: 'i-pulse2', href: 'disease/' },
     { id: 'flies', name: 'Vivarium', sub: 'Fly and her behaviours', icon: 'i-fly', href: 'flies/' },
@@ -22,6 +23,7 @@ window.Feather = (() => {
     + `<symbol id="i-worm" viewBox="0 0 24 24"><path d="M4 16c2-5 5-5 7-2s5 3 7-2"/><circle cx="18.5" cy="9.5" r="1.2"/></symbol>`
     + `<symbol id="i-pulse2" viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></symbol>`
     + `<symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h12M13 7l5 5-5 5"/></symbol>`
+    + `<symbol id="i-neuron" viewBox="0 0 24 24"><circle cx="9" cy="12" r="3.2"/><path d="M12.2 12H21M17 12l2-2M17 12l2 2M6.3 10.2L3.5 7M6.3 13.8L3.5 17M9 8.8V4"/></symbol>`
     + `<symbol id="i-cards" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M4 11h16M8 15h5"/></symbol>`
     + `</defs></svg>`;
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -111,6 +113,13 @@ window.Feather = (() => {
       { el: '.tiles', t: 'The rest of the lab', b: 'Parkinson\u2019s, the Vivarium (our fly, what she does and why), a map of every brain region, and the worm.' },
       { el: '#muse-btn', t: 'Ask Claude', b: 'Got a question? Claude, Anthropic’s AI, answers from the lab’s own records first and then the web, and shows its sources.' },
       { el: '[data-light-toggle]', t: 'Light or dark', b: 'Switch between a light and a dark look whenever you like.' },
+    ],
+    neuron: [
+      { t: 'Neuron basics', b: 'One simulated neuron you can poke. Everything in this lab is built from this one part.' },
+      { el: '#bench1', t: '1. Make it fire', b: 'Pick a stimulus and a strength, then press Run. Watch the voltage: a small bump, or a full action potential.' },
+      { el: '.cards', t: '2. The big ideas', b: 'Resting potential, threshold, repolarisation, refractory period and firing rate. Each card loads an experiment into the bench.' },
+      { el: '#bench2', t: '3. Synapses add up', b: 'Excitatory inputs push the voltage up, inhibitory ones pull it down. The neuron fires only if the total crosses threshold.' },
+      { el: '#quiz', t: '4. Predict, then check', b: 'Guess first, then load the experiment and see if you were right.' },
     ],
     discover: [
       { t: 'The Neuron Silencing Screen', b: 'Here you switch off one neuron at a time in a simulated fly brain and watch whether the signal still reaches the tongue.' },
