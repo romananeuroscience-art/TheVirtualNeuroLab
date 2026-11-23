@@ -1,0 +1,21 @@
+name: Visual learning quality gates
+on:
+  pull_request:
+    paths:
+      - 'learning/**'
+      - 'tools/check_learning_modules.py'
+      - '.github/workflows/learning-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  curriculum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate learning modules and syllabus map
+        run: python tools/check_learning_modules.py
